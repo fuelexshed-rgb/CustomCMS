@@ -32,8 +32,8 @@
   --border: #c9d4e3;
   --text: #111827;
   --muted: #5b677a;
-  /* Darker than --text so Faruma/Thaana stays readable on soft backgrounds */
-  --dhivehi-color: #030712;
+  /* Solid ink for Thaana (Faruma can look faint vs system UI fonts) */
+  --dhivehi-color: #000000;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --danger: #dc2626;
@@ -345,10 +345,18 @@ label {
   text-align: left;
 }
 
+/* Beat `.data-table td { text-align: left }` (same specificity, comes later) */
 .data-table td.dhivehi {
+  direction: rtl;
+  text-align: right;
   font-size: var(--dhivehi-text-size);
   line-height: var(--dhivehi-line-height);
   color: var(--dhivehi-color);
+}
+
+[data-theme='light'] .data-table td.dhivehi {
+  color: #000000;
+  font-weight: 600;
 }
 
 .data-table th {
