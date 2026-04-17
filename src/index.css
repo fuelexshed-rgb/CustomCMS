@@ -16,6 +16,8 @@
   --border: #2d3a4d;
   --text: #e8eef7;
   --muted: #8b9cb3;
+  /* Thaana / Faruma: match body text (avoids washed-out or inherited grey) */
+  --dhivehi-color: var(--text);
   --accent: #3b82f6;
   --accent-hover: #2563eb;
   --danger: #ef4444;
@@ -30,6 +32,8 @@
   --border: #c9d4e3;
   --text: #111827;
   --muted: #5b677a;
+  /* Darker than --text so Faruma/Thaana stays readable on soft backgrounds */
+  --dhivehi-color: #030712;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --danger: #dc2626;
@@ -68,6 +72,7 @@ body {
   font-family: 'Faruma', 'Noto Sans Thaana', sans-serif;
   direction: rtl;
   text-align: right;
+  color: var(--dhivehi-color);
 }
 
 input.dhivehi,
@@ -78,6 +83,7 @@ select.input.dhivehi {
   font-size: var(--dhivehi-text-size);
   line-height: var(--dhivehi-line-height);
   padding: 0.75rem 1rem;
+  color: var(--dhivehi-color);
 }
 
 textarea.dhivehi {
@@ -142,6 +148,12 @@ select.input:focus {
   box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
+input.input.dhivehi,
+textarea.input.dhivehi,
+select.input.dhivehi {
+  color: var(--dhivehi-color);
+}
+
 label {
   display: block;
   font-size: 0.85rem;
@@ -167,6 +179,7 @@ label {
   line-height: var(--dhivehi-line-height);
   direction: rtl;
   text-align: right;
+  color: var(--dhivehi-color);
   min-height: 320px;
   padding: 1.1rem 1.15rem;
   outline: none;
@@ -335,6 +348,7 @@ label {
 .data-table td.dhivehi {
   font-size: var(--dhivehi-text-size);
   line-height: var(--dhivehi-line-height);
+  color: var(--dhivehi-color);
 }
 
 .data-table th {
