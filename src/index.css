@@ -1,0 +1,474 @@
+/* Faruma — Dhivehi */
+@import url('https://db.onlinewebfonts.com/c/f91c109632ac0c8e5980c24dff098a6f?family=Faruma');
+
+:root {
+  --radius: 10px;
+  /* Thaana / Faruma reads better slightly larger than default UI text */
+  --dhivehi-text-size: 1.25rem;
+  --dhivehi-line-height: 1.7;
+}
+
+/* Dark (default) */
+:root,
+[data-theme='dark'] {
+  --bg: #0f1419;
+  --surface: #1a2332;
+  --border: #2d3a4d;
+  --text: #e8eef7;
+  --muted: #8b9cb3;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --danger: #ef4444;
+  --focus-ring: rgba(59, 130, 246, 0.28);
+  --editor-link: #93c5fd;
+  --overlay: rgba(0, 0, 0, 0.65);
+}
+
+[data-theme='light'] {
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --border: #c9d4e3;
+  --text: #111827;
+  --muted: #5b677a;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --danger: #dc2626;
+  --focus-ring: rgba(37, 99, 235, 0.22);
+  --editor-link: #1d4ed8;
+  --overlay: rgba(17, 24, 39, 0.45);
+}
+
+html {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Dhivehi / Thaana content: Faruma + RTL (use on summary, body, author, category names) */
+.dhivehi,
+[lang='dv'] {
+  font-family: 'Faruma', 'Noto Sans Thaana', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+input.dhivehi,
+textarea.dhivehi,
+select.input.dhivehi {
+  direction: rtl;
+  text-align: right;
+  font-size: var(--dhivehi-text-size);
+  line-height: var(--dhivehi-line-height);
+  padding: 0.75rem 1rem;
+}
+
+textarea.dhivehi {
+  min-height: 6.5rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--muted);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.input,
+select.input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.input:focus,
+select.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 1.5rem;
+}
+
+/* TipTap body editor — RTL + Faruma */
+.tiptap-editor.dhivehi-editor .ProseMirror {
+  font-family: 'Faruma', 'Noto Sans Thaana', sans-serif;
+  font-size: var(--dhivehi-text-size);
+  line-height: var(--dhivehi-line-height);
+  direction: rtl;
+  text-align: right;
+  min-height: 320px;
+  padding: 1.1rem 1.15rem;
+  outline: none;
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror h2 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror h3 {
+  font-size: 1.35rem;
+  line-height: 1.45;
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror p {
+  margin: 0.5em 0;
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0.75rem auto;
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror a {
+  color: var(--editor-link);
+}
+
+.tiptap-editor.dhivehi-editor .ProseMirror p.is-editor-empty:first-child::before {
+  color: var(--muted);
+  float: right;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error-text {
+  color: var(--danger);
+  margin: 0.5rem 0 0;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.topbar-title {
+  margin: 0;
+  font-size: 1.15rem;
+  flex: 1;
+  text-align: center;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.main {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.main.narrow {
+  max-width: 800px;
+}
+
+.login-shell {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.login-theme-bar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  margin: 0;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+}
+
+.modal-title {
+  margin-top: 0;
+}
+
+.modal-card-themed {
+  position: relative;
+}
+
+.modal-theme-corner {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid var(--border);
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+}
+
+.data-table td.dhivehi {
+  font-size: var(--dhivehi-text-size);
+  line-height: var(--dhivehi-line-height);
+}
+
+.data-table th {
+  background: var(--surface);
+}
+
+.row-inline {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.row-inline .input {
+  flex: 1;
+  min-width: 160px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.rich-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.toolbar-hint {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.article-form textarea.input.dhivehi {
+  resize: vertical;
+  min-height: 6.5rem;
+}
+
+.field-hint {
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.featured-image-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.featured-preview-wrap {
+  margin-top: 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  max-width: 420px;
+  background: var(--bg);
+}
+
+.featured-preview {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.thumb,
+.th-thumb,
+.td-thumb {
+  width: 72px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dashboard-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+}
+
+.theme-toggle {
+  min-width: 4.25rem;
+  font-size: 0.9rem;
+}
+
+[data-theme='light'] .btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
