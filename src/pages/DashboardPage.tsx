@@ -5,7 +5,27 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Article } from '../types'
 
-type Row = Article & { categories: { name: string } | null }
+type Row = Pick<
+  Article,
+  | 'id'
+  | 'title'
+  | 'slug'
+  | 'featured_image_url'
+  | 'summary'
+  | 'published_at'
+  | 'updated_at'
+  | 'category_id'
+> & {
+  categories: { name: string } | { name: string }[] | null
+}
+
+function categoryLabel(
+  categories: Row['categories'],
+): string {
+  if (!categories) return '—'
+  const row = Array.isArray(categories) ? categories[0] : categories
+  return row?.name?.trim() || '—'
+}
 
 export function DashboardPage() {
   const { user, signOut } = useAuth()
@@ -89,7 +109,7 @@ export function DashboardPage() {
                     <td>
                       <code>{a.slug}</code>
                     </td>
-                    <td className="dhivehi">{a.categories?.name ?? '—'}</td>
+                    <td className="dhivehi">{categoryLabel(a.categories)}</td>
                     <td>{a.published_at ? 'Published' : 'Draft'}</td>
                     <td>{a.published_at ? new Date(a.published_at).toLocaleString() : '—'}</td>
                     <td>
