@@ -103,7 +103,7 @@ export function RichTextEditor({ content, onChange, placeholder }: Props) {
   if (!editor) return <div className="card tiptap-editor dhivehi-editor">Loading editor…</div>
 
   return (
-    <div className="rich-wrap">
+    <div className="rich-wrap article-rich-editor">
       <div className="toolbar" dir="ltr">
         <button type="button" className="btn btn-ghost" onClick={toggleBold} title="Bold">
           <strong>B</strong>

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type CSSProperties, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { slugify } from '../lib/slug'
 import { useAuth } from '../context/AuthContext'
 import { RichTextEditor } from '../components/RichTextEditor'
 import { ThemeToggle } from '../components/ThemeToggle'
+import { useTheme } from '../context/ThemeContext'
 import { uploadArticleImage } from '../lib/storageUpload'
 import type { Category } from '../types'
 
@@ -13,6 +14,23 @@ export function ArticleEditPage() {
   const isNew = id === 'new' || !id
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { theme } = useTheme()
+
+  /** Set on each control — Chrome reads this for ::placeholder / -webkit-input-placeholder. */
+  const dhivehiPlaceholderInk = useMemo((): CSSProperties => {
+    const ink = theme === 'light' ? '#000000' : '#cbd5e1'
+    return { ['--article-placeholder-ink' as string]: ink }
+  }, [theme])
+
+  const authorReadonlyStyle = useMemo((): CSSProperties => {
+    if (theme !== 'light') return dhivehiPlaceholderInk
+    return {
+      ...dhivehiPlaceholderInk,
+      color: '#000000',
+      WebkitTextFillColor: '#000000',
+      opacity: 1,
+    }
+  }, [theme, dhivehiPlaceholderInk])
 
   const [categories, setCategories] = useState<Category[]>([])
   const [authorName, setAuthorName] = useState('')
@@ -184,6 +202,7 @@ export function ArticleEditPage() {
             <div className="row-inline">
               <select
                 className="input dhivehi"
+                style={dhivehiPlaceholderInk}
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
                 dir="rtl"
@@ -210,7 +229,13 @@ export function ArticleEditPage() {
 
           <div className="field">
             <label>Author</label>
-            <input className="input dhivehi" value={authorName} readOnly dir="rtl" />
+            <input
+              className="input dhivehi"
+              value={authorName}
+              readOnly
+              dir="rtl"
+              style={authorReadonlyStyle}
+            />
           </div>
 
           <div className="field">
@@ -218,6 +243,7 @@ export function ArticleEditPage() {
             <input
               id="title"
               className="input dhivehi"
+              style={dhivehiPlaceholderInk}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Headline"
@@ -244,9 +270,11 @@ export function ArticleEditPage() {
             <textarea
               id="summary"
               className="input dhivehi"
+              style={dhivehiPlaceholderInk}
               rows={3}
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
+              placeholder="Short summary (Dhivehi)"
               dir="rtl"
             />
           </div>
@@ -339,6 +367,7 @@ export function ArticleEditPage() {
                 <label>Name</label>
                 <input
                   className="input dhivehi"
+                  style={dhivehiPlaceholderInk}
                   value={catName}
                   onChange={(e) => setCatName(e.target.value)}
                   dir="rtl"

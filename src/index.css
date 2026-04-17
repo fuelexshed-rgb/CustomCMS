@@ -1,5 +1,6 @@
-/* Faruma — Dhivehi */
+/* Dhivehi: Faruma primary, A_Waheed fallback (same CDN as Faruma) */
 @import url('https://db.onlinewebfonts.com/c/f91c109632ac0c8e5980c24dff098a6f?family=Faruma');
+@import url('https://db.onlinewebfonts.com/c/d52697857e3d77f4e87cca8a91722667?family=A_Waheed');
 
 :root {
   --radius: 10px;
@@ -24,6 +25,8 @@
   --focus-ring: rgba(59, 130, 246, 0.28);
   --editor-link: #93c5fd;
   --overlay: rgba(0, 0, 0, 0.65);
+  /* Input + TipTap ::placeholder / data-placeholder hint (not body text) */
+  --field-placeholder: #cbd5e1;
 }
 
 [data-theme='light'] {
@@ -40,6 +43,7 @@
   --focus-ring: rgba(37, 99, 235, 0.22);
   --editor-link: #1d4ed8;
   --overlay: rgba(17, 24, 39, 0.45);
+  --field-placeholder: #000000;
 }
 
 html {
@@ -66,10 +70,10 @@ body {
   min-height: 100vh;
 }
 
-/* Dhivehi / Thaana content: Faruma + RTL (use on summary, body, author, category names) */
+/* Dhivehi / Thaana content: Faruma → A_Waheed → RTL (use on summary, body, author, category names) */
 .dhivehi,
 [lang='dv'] {
-  font-family: 'Faruma', 'Noto Sans Thaana', sans-serif;
+  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
   direction: rtl;
   text-align: right;
   color: var(--dhivehi-color);
@@ -154,6 +158,88 @@ select.input.dhivehi {
   color: var(--dhivehi-color);
 }
 
+/*
+ * Light mode: typed Dhivehi text black.
+ * Do NOT set -webkit-text-fill-color on the input itself — in Chrome it overrides ::placeholder
+ * and keeps hint text looking faint grey. Placeholder color is set on the pseudo-elements below.
+ */
+[data-theme='light'] .article-form input.input.dhivehi,
+[data-theme='light'] .article-form textarea.input.dhivehi,
+[data-theme='light'] .article-form select.input.dhivehi {
+  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
+  font-weight: 600;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000;
+  caret-color: #000000;
+  opacity: 1;
+}
+
+/* <select> has no ::placeholder — safe to force fill so chosen Dhivehi option isn’t washed out */
+[data-theme='light'] .article-form select.input.dhivehi {
+  -webkit-text-fill-color: #000000 !important;
+}
+
+/*
+ * Filled value text: WebKit needs text-fill on the control; omit when :placeholder-shown
+ * so empty fields still use ::placeholder / -webkit-input-placeholder rules.
+ */
+[data-theme='light'] .article-form input.input.dhivehi:not(:placeholder-shown),
+[data-theme='light'] .article-form textarea.input.dhivehi:not(:placeholder-shown) {
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+[data-theme='light'] .article-form input.input.dhivehi[readonly] {
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+/* Native placeholders — need own color + -webkit-text-fill on the pseudo (not on the input) */
+.article-form input::placeholder,
+.article-form textarea::placeholder,
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: var(--field-placeholder);
+  opacity: 1;
+}
+
+.article-form input::-webkit-input-placeholder,
+.article-form textarea::-webkit-input-placeholder,
+.modal input::-webkit-input-placeholder,
+.modal textarea::-webkit-input-placeholder {
+  color: var(--field-placeholder);
+  -webkit-text-fill-color: var(--field-placeholder);
+  opacity: 1;
+}
+
+/*
+ * Dhivehi fields: --article-placeholder-ink is set inline (ArticleEditPage) so Chrome
+ * resolves a real color on the originating element for ::placeholder.
+ */
+.article-form input.input.dhivehi::placeholder,
+.article-form textarea.input.dhivehi::placeholder,
+.modal input.input.dhivehi::placeholder {
+  color: var(--article-placeholder-ink, var(--field-placeholder)) !important;
+  opacity: 1 !important;
+}
+
+.article-form input.input.dhivehi::-webkit-input-placeholder,
+.article-form textarea.input.dhivehi::-webkit-input-placeholder,
+.modal input.input.dhivehi::-webkit-input-placeholder {
+  color: var(--article-placeholder-ink, var(--field-placeholder)) !important;
+  -webkit-text-fill-color: var(--article-placeholder-ink, var(--field-placeholder)) !important;
+  opacity: 1 !important;
+}
+
+.article-form input.input.dhivehi::-moz-placeholder,
+.article-form textarea.input.dhivehi::-moz-placeholder,
+.modal input.input.dhivehi::-moz-placeholder {
+  color: var(--article-placeholder-ink, var(--field-placeholder)) !important;
+  opacity: 1 !important;
+}
+
 label {
   display: block;
   font-size: 0.85rem;
@@ -172,9 +258,10 @@ label {
   padding: 1.5rem;
 }
 
-/* TipTap body editor — RTL + Faruma */
+/* TipTap body editor — RTL + Faruma (ProseMirror class is on the editor root, not a child) */
+.tiptap-editor.dhivehi-editor.ProseMirror,
 .tiptap-editor.dhivehi-editor .ProseMirror {
-  font-family: 'Faruma', 'Noto Sans Thaana', sans-serif;
+  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
   font-size: var(--dhivehi-text-size);
   line-height: var(--dhivehi-line-height);
   direction: rtl;
@@ -185,20 +272,57 @@ label {
   outline: none;
 }
 
+[data-theme='light'] .tiptap-editor.dhivehi-editor.ProseMirror,
+[data-theme='light'] .tiptap-editor.dhivehi-editor .ProseMirror {
+  color: #000000;
+}
+
+/*
+ * Article body editor: TipTap may not match .tiptap-editor on the same node as .ProseMirror.
+ * Force black for all editable Thaana text in light mode (links keep accent below).
+ */
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror,
+[data-theme='light'] .article-form .article-rich-editor .tiptap,
+[data-theme='light'] .article-form .article-rich-editor [contenteditable='true'] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  caret-color: #000000;
+}
+
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror p,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror li,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror h2,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror h3,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror span,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror strong,
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror em {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror a {
+  color: var(--editor-link) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.tiptap-editor.dhivehi-editor.ProseMirror h2,
 .tiptap-editor.dhivehi-editor .ProseMirror h2 {
   font-size: 1.5rem;
   line-height: 1.4;
 }
 
+.tiptap-editor.dhivehi-editor.ProseMirror h3,
 .tiptap-editor.dhivehi-editor .ProseMirror h3 {
   font-size: 1.35rem;
   line-height: 1.45;
 }
 
+.tiptap-editor.dhivehi-editor.ProseMirror p,
 .tiptap-editor.dhivehi-editor .ProseMirror p {
   margin: 0.5em 0;
 }
 
+.tiptap-editor.dhivehi-editor.ProseMirror img,
 .tiptap-editor.dhivehi-editor .ProseMirror img {
   max-width: 100%;
   height: auto;
@@ -207,13 +331,24 @@ label {
   margin: 0.75rem auto;
 }
 
+.tiptap-editor.dhivehi-editor.ProseMirror a,
 .tiptap-editor.dhivehi-editor .ProseMirror a {
   color: var(--editor-link);
 }
 
-.tiptap-editor.dhivehi-editor .ProseMirror p.is-editor-empty:first-child::before {
-  color: var(--muted);
+/*
+ * TipTap Placeholder extension — needs content: attr(data-placeholder) (see tiptap.dev placeholder).
+ * Without this, hint styling is inconsistent; color was also tied to --muted (grey).
+ */
+.tiptap-editor.dhivehi-editor.ProseMirror p.is-editor-empty:first-child::before,
+.tiptap-editor.dhivehi-editor .ProseMirror p.is-editor-empty:first-child::before,
+.tiptap-editor.dhivehi-editor.ProseMirror p.is-empty::before,
+.tiptap-editor.dhivehi-editor .ProseMirror p.is-empty::before {
+  content: attr(data-placeholder);
   float: right;
+  height: 0;
+  pointer-events: none;
+  color: var(--field-placeholder);
 }
 
 .shell {
@@ -494,3 +629,19 @@ label {
 [data-theme='dark'] .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.06);
 }
+
+/*
+ * Article form — final cascade layer (Chrome greys ::placeholder + read-only values).
+ * Author uses readOnly + value (no placeholder); Title uses placeholder; Summary has placeholder.
+ */
+html[data-theme='light'] .article-form .input {
+  color-scheme: light;
+}
+
+html[data-theme='light'] .article-form input.input.dhivehi[readonly],
+html[data-theme='light'] .article-form textarea.input.dhivehi[readonly] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  opacity: 1 !important;
+}
+
