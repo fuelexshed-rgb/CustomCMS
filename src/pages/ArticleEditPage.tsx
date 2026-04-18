@@ -335,7 +335,7 @@ export function ArticleEditPage() {
               key={id ?? 'new'}
               content={bodyHtml}
               onChange={setBodyHtml}
-              placeholder="Article body — Dhivehi RTL + Faruma; paste or drop images"
+              placeholder="Article body — Dhivehi RTL + A_Faruma; paste or drop images"
             />
           </div>
 

@@ -1,10 +1,17 @@
-/* Dhivehi: Faruma primary, A_Waheed fallback (same CDN as Faruma) */
-@import url('https://db.onlinewebfonts.com/c/f91c109632ac0c8e5980c24dff098a6f?family=Faruma');
+/* Dhivehi: local A_Faruma.ttf (public/fonts), A_Waheed CDN fallback */
 @import url('https://db.onlinewebfonts.com/c/d52697857e3d77f4e87cca8a91722667?family=A_Waheed');
+
+@font-face {
+  font-family: 'A_Faruma';
+  src: url('/fonts/A_Faruma.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --radius: 10px;
-  /* Thaana / Faruma reads better slightly larger than default UI text */
+  /* Thaana / A_Faruma reads better slightly larger than default UI text */
   --dhivehi-text-size: 1.25rem;
   --dhivehi-line-height: 1.7;
 }
@@ -17,7 +24,7 @@
   --border: #2d3a4d;
   --text: #e8eef7;
   --muted: #8b9cb3;
-  /* Thaana / Faruma: match body text (avoids washed-out or inherited grey) */
+  /* Thaana / A_Faruma: match body text (avoids washed-out or inherited grey) */
   --dhivehi-color: var(--text);
   --accent: #3b82f6;
   --accent-hover: #2563eb;
@@ -35,7 +42,7 @@
   --border: #c9d4e3;
   --text: #111827;
   --muted: #5b677a;
-  /* Solid ink for Thaana (Faruma can look faint vs system UI fonts) */
+  /* Solid ink for Thaana (webfonts can look faint vs system UI fonts) */
   --dhivehi-color: #000000;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
@@ -70,10 +77,10 @@ body {
   min-height: 100vh;
 }
 
-/* Dhivehi / Thaana content: Faruma → A_Waheed → RTL (use on summary, body, author, category names) */
+/* Dhivehi / Thaana content: A_Faruma → A_Waheed → RTL (use on summary, body, author, category names) */
 .dhivehi,
 [lang='dv'] {
-  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
+  font-family: 'A_Faruma', 'A_Waheed', system-ui, sans-serif;
   direction: rtl;
   text-align: right;
   color: var(--dhivehi-color);
@@ -166,8 +173,8 @@ select.input.dhivehi {
 [data-theme='light'] .article-form input.input.dhivehi,
 [data-theme='light'] .article-form textarea.input.dhivehi,
 [data-theme='light'] .article-form select.input.dhivehi {
-  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
-  font-weight: 600;
+  font-family: 'A_Faruma', 'A_Waheed', system-ui, sans-serif;
+  font-weight: normal;
   color: #000000 !important;
   -webkit-text-fill-color: #000000;
   caret-color: #000000;
@@ -258,10 +265,10 @@ label {
   padding: 1.5rem;
 }
 
-/* TipTap body editor — RTL + Faruma (ProseMirror class is on the editor root, not a child) */
+/* TipTap body editor — RTL + A_Faruma (ProseMirror class is on the editor root, not a child) */
 .tiptap-editor.dhivehi-editor.ProseMirror,
 .tiptap-editor.dhivehi-editor .ProseMirror {
-  font-family: 'Faruma', 'A_Waheed', system-ui, sans-serif;
+  font-family: 'A_Faruma', 'A_Waheed', system-ui, sans-serif;
   font-size: var(--dhivehi-text-size);
   line-height: var(--dhivehi-line-height);
   direction: rtl;
@@ -287,7 +294,7 @@ label {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
   caret-color: #000000;
-  font-weight: 600;
+  font-weight: normal;
   opacity: 1;
 }
 
@@ -489,7 +496,7 @@ label {
 
 [data-theme='light'] .data-table td.dhivehi {
   color: #000000;
-  font-weight: 600;
+  font-weight: normal;
 }
 
 .data-table th {

@@ -90,7 +90,7 @@ export function AuthorNameGate({ children }: Props) {
               Set your author name
             </h2>
             <p className="muted" style={{ marginTop: 0 }}>
-              This name appears on your articles (Dhivehi is supported — RTL + Faruma in the editor).
+              This name appears on your articles (Dhivehi is supported — RTL + A_Faruma in the editor).
             </p>
             <form onSubmit={(e) => void onSubmit(e)}>
               <label htmlFor="author-name">Author name</label>
