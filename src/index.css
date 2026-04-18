@@ -275,11 +275,11 @@ label {
 [data-theme='light'] .tiptap-editor.dhivehi-editor.ProseMirror,
 [data-theme='light'] .tiptap-editor.dhivehi-editor .ProseMirror {
   color: #000000;
+  -webkit-text-fill-color: #000000;
 }
 
 /*
- * Article body editor: TipTap may not match .tiptap-editor on the same node as .ProseMirror.
- * Force black for all editable Thaana text in light mode (links keep accent below).
+ * Article body editor: marks (nested spans), code, list items, etc. need one sweep — listing tags misses grey text.
  */
 [data-theme='light'] .article-form .article-rich-editor .ProseMirror,
 [data-theme='light'] .article-form .article-rich-editor .tiptap,
@@ -287,22 +287,20 @@ label {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
   caret-color: #000000;
+  font-weight: 600;
+  opacity: 1;
 }
 
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror p,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror li,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror h2,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror h3,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror span,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror strong,
-[data-theme='light'] .article-form .article-rich-editor .ProseMirror em {
+[data-theme='light'] .article-form .article-rich-editor .ProseMirror *:not(a):not(img) {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
+  opacity: 1 !important;
 }
 
 [data-theme='light'] .article-form .article-rich-editor .ProseMirror a {
   color: var(--editor-link) !important;
   -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
 }
 
 .tiptap-editor.dhivehi-editor.ProseMirror h2,
