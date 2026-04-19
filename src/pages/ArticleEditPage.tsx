@@ -127,11 +127,10 @@ export function ArticleEditPage() {
         return
       }
       if (data?.id) {
-        if (publish) {
-          navigate('/', { replace: true })
-        } else {
-          navigate(`/articles/${data.id}`, { replace: true })
-        }
+        navigate('/', {
+          replace: true,
+          state: { saveFlash: publish ? ('published' as const) : ('draft' as const) },
+        })
       }
       return
     }
@@ -152,10 +151,10 @@ export function ArticleEditPage() {
       return
     }
     if (publish) {
-      navigate('/', { replace: true })
+      navigate('/', { replace: true, state: { saveFlash: 'published' as const } })
       return
     }
-    void loadArticle()
+    navigate('/', { replace: true, state: { saveFlash: 'draft' as const } })
   }
 
   const onSubmit = (e: FormEvent) => {

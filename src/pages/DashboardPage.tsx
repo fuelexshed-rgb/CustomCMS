@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AppShell } from '../components/AppShell'
+import { SaveFlashToast, type SaveFlashKind } from '../components/SaveFlashToast'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Article } from '../types'
@@ -29,9 +30,25 @@ function categoryLabel(
 
 export function DashboardPage() {
   const { user } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [flashKind, setFlashKind] = useState<SaveFlashKind | null>(null)
+  const [flashTick, setFlashTick] = useState(0)
+
+  const dismissFlash = useCallback(() => setFlashKind(null), [])
+
+  useEffect(() => {
+    const raw = location.state as { saveFlash?: SaveFlashKind } | null | undefined
+    const k = raw?.saveFlash
+    if (k === 'draft' || k === 'published') {
+      setFlashKind(k)
+      setFlashTick((n) => n + 1)
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location.state, location.pathname, navigate])
 
   const load = useCallback(async () => {
     if (!user) return
@@ -58,6 +75,7 @@ export function DashboardPage() {
 
   return (
     <AppShell>
+      <SaveFlashToast key={flashTick} kind={flashKind} onDismiss={dismissFlash} />
       <header className="page-header">
         <div>
           <h1 className="page-header__title">Articles</h1>
