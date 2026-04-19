@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ThemeToggle } from '../components/ThemeToggle'
+import { AppShell } from '../components/AppShell'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Article } from '../types'
@@ -28,7 +28,7 @@ function categoryLabel(
 }
 
 export function DashboardPage() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -57,26 +57,25 @@ export function DashboardPage() {
   }, [load])
 
   return (
-    <div className="layout">
-      <header className="topbar">
-        <h1 className="topbar-title">Dashboard</h1>
-        <div className="topbar-actions">
-          <ThemeToggle />
+    <AppShell>
+      <header className="page-header">
+        <div>
+          <h1 className="page-header__title">Articles</h1>
+          <p className="page-header__meta">Manage drafts and published stories</p>
+        </div>
+        <div className="page-header__actions">
           <Link to="/articles/new" className="btn btn-primary">
-            + New article
+            New article
           </Link>
-          <button type="button" className="btn" onClick={() => void signOut()}>
-            Sign out
-          </button>
         </div>
       </header>
 
-      <main className="main">
+      <section className="app-panel">
         {loading && <p className="muted">Loading…</p>}
         {error && <p className="error-text">{error}</p>}
         {!loading && !error && (
           <div className="table-wrap">
-            <table className="data-table">
+            <table className="data-table data-table--ui">
               <thead>
                 <tr>
                   <th className="th-thumb">Image</th>
@@ -107,13 +106,17 @@ export function DashboardPage() {
                     </td>
                     <td className="dhivehi">{a.title?.trim() || '—'}</td>
                     <td>
-                      <code>{a.slug}</code>
+                      <code className="slug-pill">{a.slug}</code>
                     </td>
                     <td className="dhivehi">{categoryLabel(a.categories)}</td>
-                    <td>{a.published_at ? 'Published' : 'Draft'}</td>
+                    <td>
+                      <span className={a.published_at ? 'status-pill status-pill--live' : 'status-pill'}>
+                        {a.published_at ? 'Published' : 'Draft'}
+                      </span>
+                    </td>
                     <td>{a.published_at ? new Date(a.published_at).toLocaleString() : '—'}</td>
                     <td>
-                      <Link to={`/articles/${a.id}`} className="btn btn-ghost">
+                      <Link to={`/articles/${a.id}`} className="btn btn-ghost btn-sm">
                         Edit
                       </Link>
                     </td>
@@ -123,7 +126,7 @@ export function DashboardPage() {
             </table>
           </div>
         )}
-      </main>
-    </div>
+      </section>
+    </AppShell>
   )
 }

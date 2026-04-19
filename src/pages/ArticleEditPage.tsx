@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase'
 import { slugify } from '../lib/slug'
 import { useAuth } from '../context/AuthContext'
 import { RichTextEditor } from '../components/RichTextEditor'
-import { ThemeToggle } from '../components/ThemeToggle'
+import { AppShell } from '../components/AppShell'
 import { useTheme } from '../context/ThemeContext'
 import { uploadArticleImage } from '../lib/storageUpload'
 import type { Category } from '../types'
@@ -126,7 +126,13 @@ export function ArticleEditPage() {
         setError(insErr.code === '23505' ? 'That slug is already in use' : insErr.message)
         return
       }
-      if (data?.id) navigate(`/articles/${data.id}`, { replace: true })
+      if (data?.id) {
+        if (publish) {
+          navigate('/', { replace: true })
+        } else {
+          navigate(`/articles/${data.id}`, { replace: true })
+        }
+      }
       return
     }
     if (!id) return
@@ -145,7 +151,10 @@ export function ArticleEditPage() {
       setError(upErr.code === '23505' ? 'That slug is already in use' : upErr.message)
       return
     }
-    if (publish) setPublishedAt(updatePayload.published_at ?? null)
+    if (publish) {
+      navigate('/', { replace: true })
+      return
+    }
     void loadArticle()
   }
 
@@ -177,26 +186,47 @@ export function ArticleEditPage() {
 
   if (loading) {
     return (
-      <div className="layout">
-        <p className="muted">Loading…</p>
-      </div>
+      <AppShell>
+        <p className="muted app-shell__loading">Loading…</p>
+      </AppShell>
     )
   }
 
+  const displayTitle = title.trim() || (isNew ? 'New article' : 'Untitled')
+  const metaBits = [
+    publishedAt ? 'Published' : 'Draft',
+    slug.trim() ? `/${slug.trim()}` : 'No slug yet',
+  ]
+
   return (
-    <div className="layout">
-      <header className="topbar">
-        <Link to="/" className="btn btn-ghost">
-          ← Dashboard
-        </Link>
-        <h1 className="topbar-title">{isNew ? 'New article' : 'Edit article'}</h1>
-        <div className="topbar-actions">
-          <ThemeToggle />
+    <AppShell>
+      <header className="page-header page-header--article">
+        <div className="page-header__article-row">
+          <Link to="/" className="btn btn-ghost btn-back">
+            ← Articles
+          </Link>
+          {featuredImageUrl ? (
+            <img src={featuredImageUrl} alt="" className="page-header__thumb" />
+          ) : (
+            <div className="page-header__thumb page-header__thumb--empty" aria-hidden />
+          )}
+          <div className="page-header__titles">
+            <h1 className="page-header__title">{displayTitle}</h1>
+            <p className="page-header__meta">{metaBits.join(' · ')}</p>
+          </div>
+        </div>
+        <div className="page-header__actions">
+          <button type="submit" form="article-form" className="btn btn-outline" disabled={saving}>
+            {saving ? 'Saving…' : 'Save draft'}
+          </button>
+          <button type="button" className="btn btn-publish" disabled={saving} onClick={() => void save(true)}>
+            {saving ? '…' : 'Publish'}
+          </button>
         </div>
       </header>
 
-      <main className="main narrow">
-        <form onSubmit={onSubmit} className="article-form">
+      <section className="app-panel app-panel--article">
+        <form id="article-form" onSubmit={onSubmit} className="article-form">
           <div className="field">
             <label>Category</label>
             <div className="row-inline">
@@ -340,23 +370,14 @@ export function ArticleEditPage() {
           </div>
 
           {publishedAt && (
-            <p className="muted">
+            <p className="muted form-published-line">
               Published: {new Date(publishedAt).toLocaleString()}
             </p>
           )}
 
           {error && <p className="error-text">{error}</p>}
-
-          <div className="form-actions">
-            <button type="submit" className="btn" disabled={saving}>
-              {saving ? 'Saving…' : 'Save draft'}
-            </button>
-            <button type="button" className="btn btn-primary" disabled={saving} onClick={() => void save(true)}>
-              {saving ? '…' : 'Publish'}
-            </button>
-          </div>
         </form>
-      </main>
+      </section>
 
       {catOpen && (
         <div className="modal-overlay" role="dialog" aria-modal="true">
@@ -394,6 +415,6 @@ export function ArticleEditPage() {
           </div>
         </div>
       )}
-    </div>
+    </AppShell>
   )
 }
